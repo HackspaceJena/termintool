@@ -1,0 +1,12 @@
+{ "name": "termintool"
+, "version": "0.0.1"
+, "engines": ["node >= 0.8.0"]
+, "main": "termine.js"
+, "dependencies":
+  { "ejs":              "*"
+  , "ejs-ext":          "latest"
+  , "jsdom":          "latest"
+  , "email-templates": "latest"
+  , "nodemailer": "latest"
+  }
+}
