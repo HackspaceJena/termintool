@@ -1,7 +1,7 @@
 termintool
 ==========
 
-Ein kleines Tool zum Parsen der Terminseite und benachrichtigen auf
+Ein kleines Tool zum Parsen einer Terminseite und Benachrichtigen auf
 verschiedene Medien.
 
 Installation
