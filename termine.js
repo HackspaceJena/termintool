@@ -7,9 +7,12 @@
 * ----------------------------------------------------------------------------
 */
 
-var EventTool = require('./event').EventTool;
+var 
+  EventTool = require('./event').EventTool;
 
 
 var et = new EventTool();
+et.setupPublishers();
+et.on('events',et.processEvents);
 
 et.run();
