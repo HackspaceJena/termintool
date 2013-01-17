@@ -5,7 +5,7 @@ exports.url = {
   method: 'GET'
 };
 
-exports.publishers = ['mail','identica'];
+exports.publishers = ['mail','latex'];
 
 exports.mail = {
    mda: 'sendmail' // smtp is also possible
@@ -20,4 +20,9 @@ exports.mail = {
      from: ''
     ,to: ''
   }
+}
+
+exports.latex = {
+   output: ''
+  ,templates: ['kulturprogramm-ks']
 }
