@@ -15,44 +15,16 @@ var
   ,http = require('https')
   ,jsdom = require('jsdom')
   ,nodemailer = require("nodemailer")
-  ,log = require('sys').log;
+  ,log = require('sys').log
+  ,mustache = require('mustache')
+  ,strftime = require('strftime')
+  ,fs = require('fs');
 
-/**
- * Returns the week number for this date.  dowOffset is the day of week the week
- * "starts" on for your locale - it can be from 0 to 6. If dowOffset is 1 (Monday),
- * the week returned is the ISO 8601 week number.
- * @param int dowOffset
- * @return int
- */
-Date.prototype.getWeek = function (dowOffset) {
-/*getWeek() was developed by Nick Baicoianu at MeanFreePath: http://www.epoch-calendar.com */
-
-	dowOffset = typeof(dowOffset) == 'int' ? dowOffset : 0; //default dowOffset to zero
-	var newYear = new Date(this.getFullYear(),0,1);
-	var day = newYear.getDay() - dowOffset; //the day of week the year begins on
-	day = (day >= 0 ? day : day + 7);
-	var daynum = Math.floor((this.getTime() - newYear.getTime() - 
-	(this.getTimezoneOffset()-newYear.getTimezoneOffset())*60000)/86400000) + 1;
-	var weeknum;
-	//if the year starts before the middle of a week
-	if(day < 4) {
-		weeknum = Math.floor((daynum+day-1)/7) + 1;
-		if(weeknum > 52) {
-			nYear = new Date(this.getFullYear() + 1,0,1);
-			nday = nYear.getDay() - dowOffset;
-			nday = nday >= 0 ? nday : nday + 7;
-			/*if the next year starts before the middle of
- 			  the week, it is week #1 of that year*/
-			weeknum = nday < 4 ? 1 : 53;
-		}
-	}
-	else {
-		weeknum = Math.floor((daynum+day-1)/7);
-	}
-	return weeknum;
-};
-
-
+function nextDay(x){
+    var now = new Date();    
+    now.setDate(now.getDate() + (x+(7-now.getDay())) % 7);
+    return now;
+}
 
 function EventTool() {
     events.EventEmitter.call(this);
@@ -74,17 +46,35 @@ EventTool.prototype.events = [];
 EventTool.prototype.publishMail = function() {
     var self = this;
     log('Verschicke eine E-Mail');
+
+    var view = {
+        events: []
+    };
+    // prepare the data
+    self.events.forEach(function(el) {
+        var item = {};
+        item['startdate'] = strftime('%Y-%m-%d %H:%M',el.startdate);
+        item['enddate'] = strftime('%Y-%m-%d %H:%M',el.enddate);
+        item['heading'] = el.heading;
+        item['text'] = el.text;
+        view.events.push(item);
+    });
+    // load the template
+    var template = fs.readFileSync('templates/email/template.mustache','utf-8');
+    console.log(view);
+    var output = mustache.render(template, view);
     var transport = null;
     if (self.config.mail.mda == 'smtp') {
         log('mda smtp not yet implemented');
     } else {
         transport = nodemailer.createTransport("sendmail");
     }
+    var nextMonday = nextDay(1);
     transport.sendMail({
          from: self.config.mail.composing.from
         ,to: self.config.mail.composing.to
-        ,subject: 'Terminankündigungen KW ' + (new Date()).getWeek()
-        ,text: 'moep moep'
+        ,subject: strftime('Terminankündigungen KW %U/%Y // ab dem %Y-%m-%d',nextMonday)
+        ,text: output
     });
 }
 
@@ -118,7 +108,8 @@ EventTool.prototype.parseData = function() {
                 var event = {
                      startdate : new Date(match[1], match[2], match[3], match[4], match[5])
                     ,enddate : new Date(match[1], match[2], match[3], match[6], match[7])
-                    ,text : match[8]
+                    ,heading : match[8].split("—")[0].trim()
+                    ,text : match[8].split("—")[1].trim()
                 };
                 self.events.push(event);
             }
