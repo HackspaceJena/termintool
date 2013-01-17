@@ -18,7 +18,8 @@ var
   ,log = require('sys').log
   ,mustache = require('mustache')
   ,strftime = require('strftime')
-  ,fs = require('fs');
+  ,fs = require('fs')
+  ,glob = require('glob');
 
 function nextDay(x){
     var now = new Date();    
@@ -43,10 +44,8 @@ EventTool.prototype.config = require('./config');
 EventTool.prototype.RequestData = '';
 EventTool.prototype.events = [];
 
-EventTool.prototype.publishMail = function() {
+EventTool.prototype.processEventData = function() {
     var self = this;
-    log('Verschicke eine E-Mail');
-
     var view = {
         events: []
     };
@@ -59,6 +58,13 @@ EventTool.prototype.publishMail = function() {
         item['text'] = el.text;
         view.events.push(item);
     });
+    return view;
+}
+
+EventTool.prototype.publishMail = function() {
+    var self = this;
+    log('Verschicke eine E-Mail');
+    var view = self.processEventData();
     // load the template
     var template = fs.readFileSync('templates/email/template.mustache','utf-8');
     console.log(view);
@@ -78,6 +84,44 @@ EventTool.prototype.publishMail = function() {
     });
 }
 
+EventTool.prototype.publishLatex = function() {
+    var self = this;
+    log('Erzeuge PDFs mit LaTeX');
+    var view = self.processEventData();
+    // generate the pdfs
+    self.config.latex.templates.forEach(function(template){
+        var templateData = fs.readFileSync('templates/latex/'+template+'.tex','utf-8');
+        var output = mustache.render(templateData, view);
+        try {
+        fs.mkdirSync(self.config.latex.tempDir);
+        } catch(e) {
+            // POKEMON! GOTTA CATCH THEM ALL!
+        }
+        var tempfilePrefix = self.config.latex.tempDir + '/' + template;
+        fs.writeFileSync(tempfilePrefix+'.tex',output);
+        var spawn = require('child_process').spawn,
+            pdflatex    = spawn('pdflatex', ['-interaction','nonstopmode','-output-directory', self.config.latex.tempDir,tempfilePrefix+'.tex']);
+
+        pdflatex.on('exit', function (code) {
+            log('child process exited with code ' + code);
+            if (code === 0) {
+                log('Copy the PDF to the output dir');
+                fs.createReadStream(tempfilePrefix+'.pdf').pipe(fs.createWriteStream(self.config.latex.output+'/'+template+'.pdf'));
+
+                // now clean up the tempdir
+                glob('**/*',{cwd:self.config.latex.tempDir},function(err,files){
+                    files.forEach(function(file){
+                        fs.unlinkSync(self.config.latex.tempDir+'/'+file);
+                    });
+                });
+            } else {
+                log('Failed to generate the pdf. Please chek the logs under '+ tempfilePrefix+'.log');
+            }
+            
+        });
+    });
+}
+
 EventTool.prototype.publishIdentica = function() {
     log('Verschicke einen Dent');
 }
@@ -85,6 +129,7 @@ EventTool.prototype.publishIdentica = function() {
 EventTool.prototype.setupPublishers = function() {
     this.on('mail',this.publishMail);
     this.on('identica',this.publishIdentica);
+    this.on('latex',this.publishLatex);
 }
 
 EventTool.prototype.processEvents = function() {

@@ -7,5 +7,6 @@
   , "jsdom":          "latest"
   , "nodemailer": "latest"
   , "strftime": "latest"
+  , "glob": "latest"
   }
 }
