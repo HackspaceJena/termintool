@@ -3,7 +3,7 @@
 \documentclass[ngerman]{paper}
 \renewcommand{\familydefault}{\ttdefault}
 \usepackage[T1]{fontenc}
-\usepackage[latin9]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{geometry}
 \geometry{verbose,tmargin=0cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
 \usepackage{array}
@@ -34,27 +34,12 @@ sondern aus Spaß an der Sache.
 \section*{Wie gewohnt das Kulturprogramm für kommende Woche:}
 
 \begin{tabular*}{0.8\columnwidth}{@{\extracolsep{\fill}}>{\raggedright}p{0.28\columnwidth}>{\raggedright}p{0.6\columnwidth}}
-2013-01-14 20:00: & Elektronikrunde im Space
+{{#events}}
+{{startdate}}: & {{heading}}
 
-Gemeinsam in die Welt der Elektronik vordringen\tabularnewline
+{{text}}\tabularnewline
 \midrule
-2013-01-15 20:00: & Offene Runde im Space\tabularnewline
-\midrule
-2013-01-16~20:00: & Spielerunde~\\
-Eine Spielerunde trifft sich,~\\
-um Brettspiele zu benutzen. Komm auch DU!\tabularnewline
-\midrule
-2013-01-17~19:30: & LPI-Lerngruppe~\\
-Wir treffen uns um gemeinsam für die LPI 101 und 102 zu lernen\tabularnewline
-\midrule
-2013-01-18 19:30: & Kochrunde im Space~\\
-Wir kochen diesmal Soljanka~\\
-Bitte im Wiki eintragen: http://yaturl.net/67d\tabularnewline
-\midrule
-2013-01-20 16:30: & Chaoscafe~\\
-Das regelmäßige Chaostreffen am Sonntagnachmittag. Gemeinsam diskutieren,
-Kuchen futtern und Sachen mit Technik machen.\tabularnewline
-\bottomrule
+{{/events}}
 \end{tabular*}
 
 
