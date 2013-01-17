@@ -3,10 +3,9 @@
 , "engines": ["node >= 0.8.0"]
 , "main": "termine.js"
 , "dependencies":
-  { "ejs":              "*"
-  , "ejs-ext":          "latest"
+  { "mustache":          "latest"
   , "jsdom":          "latest"
-  , "email-templates": "latest"
   , "nodemailer": "latest"
+  , "strftime": "latest"
   }
 }
