@@ -5,10 +5,10 @@ exports.url = {
   method: 'GET'
 };
 
-exports.publishers = ['mail','latex'];
+exports.publishers = ['latex'];
 
 exports.mail = {
-   mda: 'sendmail' // smtp is also possible
+   mda: 'sendmail' // smtp is also possible, but not implemented yet, so are the settings bellow a bit useless
   ,host: ''
   ,port: ''
   ,secureConnection: true
@@ -23,6 +23,7 @@ exports.mail = {
 }
 
 exports.latex = {
-   output: ''
+   output: 'output'
+  ,tempDir: '/tmp/termintool'
   ,templates: ['kulturprogramm-ks']
 }
