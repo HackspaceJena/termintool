@@ -126,10 +126,17 @@ EventTool.prototype.publishIdentica = function() {
     log('Verschicke einen Dent');
 }
 
+EventTool.prototype.publishConsole = function() {
+    var self = this;
+    var view = self.processEventData();
+    log(util.inspect(view));
+}
+
 EventTool.prototype.setupPublishers = function() {
     this.on('mail',this.publishMail);
     this.on('identica',this.publishIdentica);
     this.on('latex',this.publishLatex);
+    this.on('console',this.publishConsole);
 }
 
 EventTool.prototype.processEvents = function() {
