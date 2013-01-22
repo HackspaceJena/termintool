@@ -12,7 +12,7 @@ Folgende Sachen sollten installiert sein:
 * [nodejs](http://nodejs.org/)
 * [npm](https://github.com/isaacs/npm)
 
-Danach die abhängigkeiten über npm installieren:
+Danach die Abhängigkeiten über npm installieren:
 
 npm install
 
