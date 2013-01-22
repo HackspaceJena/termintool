@@ -8,5 +8,6 @@
   , "nodemailer": "latest"
   , "strftime": "latest"
   , "glob": "latest"
+  , "jquery": "latest"
   }
 }

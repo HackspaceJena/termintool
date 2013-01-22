@@ -19,7 +19,8 @@ var
   ,mustache = require('mustache')
   ,strftime = require('strftime')
   ,fs = require('fs')
-  ,glob = require('glob');
+  ,glob = require('glob')
+  ,jq = require('jquery');
 
 function nextDay(x){
     var now = new Date();    
@@ -150,9 +151,9 @@ EventTool.prototype.parseData = function() {
     var self = this.req.EventTool;
     jsdom.env(
         self.RequestData,
-        ["http://code.jquery.com/jquery.js"],
         function (errors, window) {
-            var wiki_text = window.$("#wiki__text").val();
+            var $ = jq.create(window);
+            var wiki_text = $("#wiki__text").val();
             var re = /\s\* (\d{4})\-(\d{2})\-(\d{2}) (\d{2})\:(\d{2}) - (\d{2})\:(\d{2}) (.*)/g;
             var match = null;
             self.events = [];
