@@ -12,7 +12,7 @@ var
   ,util = require('util')
   ,dgram = require('dgram')
   ,config = require('./config')
-  ,http = require('https')
+  ,request = require('request')
   ,jsdom = require('jsdom')
   ,nodemailer = require("nodemailer")
   ,log = require('sys').log
@@ -68,7 +68,6 @@ EventTool.prototype.publishMail = function() {
     var view = self.processEventData();
     // load the template
     var template = fs.readFileSync('templates/email/template.mustache','utf-8');
-    console.log(view);
     var output = mustache.render(template, view);
     var transport = null;
     if (self.config.mail.mda == 'smtp') {
@@ -91,7 +90,7 @@ EventTool.prototype.publishLatex = function() {
     var view = self.processEventData();
     // generate the pdfs
     self.config.latex.templates.forEach(function(template){
-        var templateData = fs.readFileSync('templates/latex/'+template+'.tex','utf-8');
+        var templateData = fs.readFileSync('templates/latex/'+template+'.tex','utf-8');        
         var output = mustache.render(templateData, view);
         try {
         fs.mkdirSync(self.config.latex.tempDir);
@@ -147,8 +146,8 @@ EventTool.prototype.processEvents = function() {
     });
 }
 
-EventTool.prototype.parseData = function() {
-    var self = this.req.EventTool;
+EventTool.prototype.parseData = function(et) {
+    var self = et;
     jsdom.env(
         self.RequestData,
         function (errors, window) {
@@ -176,20 +175,17 @@ EventTool.prototype.parseData = function() {
     );
 }
 
-EventTool.prototype.processResponse = function(res) {
+EventTool.prototype.processResponse = function(error, response, body) {
     var self = this.EventTool;
-    if (res.statusCode == 200) {
-        res.on('data', function(d) {
-            self.RequestData = self.RequestData + d;
-        });
-
-        res.on('end',self.parseData);
+    if (response.statusCode == 200) {
+      self.RequestData = body;
+      self.parseData(self);
     }
 }
 
 EventTool.prototype.run = function() {
     log('Suche nach Terminen');
-    var req = http.request(this.config.url,this.processResponse);
+    var req = request({'url':this.config.url,'strictSSL': false},this.processResponse);
     req.EventTool = this;
 
     req.end();
