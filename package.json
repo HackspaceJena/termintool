@@ -9,5 +9,6 @@
   , "strftime": "latest"
   , "glob": "latest"
   , "jquery": "latest"
+  , "request": "latest"
   }
 }
