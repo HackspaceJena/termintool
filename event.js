@@ -48,13 +48,19 @@ EventTool.prototype.events = [];
 EventTool.prototype.processEventData = function() {
     var self = this;
     var view = {
-        events: []
+      events: [],
+      day: strftime('%d',new Date()),
+      month: strftime('%m',new Date()),
+      year: strftime('%Y',new Date()),
+      week: strftime('%U',new Date())
     };
     // prepare the data
     self.events.forEach(function(el) {
         var item = {};
-        item['startdate'] = strftime('%Y-%m-%d %H:%M',el.startdate);
+        item['startdate'] = strftime('%Y-%m-%d',el.startdate);
+        item['starttime'] = strftime('%H:%M',el.startdate);
         item['enddate'] = strftime('%Y-%m-%d %H:%M',el.enddate);
+        item['endtime'] = strftime('%H:%M',el.enddate);
         item['heading'] = el.heading;
         item['text'] = el.text;
         view.events.push(item);
