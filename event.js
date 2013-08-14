@@ -35,7 +35,6 @@ function EventTool() {
 
 String.prototype.EscapeLatex = function() {
   return this.toString()
-    .replace(/&amp;/g,'&')
     .replace(/\\/g,'\\textbackslash{}')
     .replace(/&/g,'\\&')
     .replace(/\|/g,'\\|')
@@ -75,7 +74,7 @@ EventTool.prototype.processEventData = function() {
         item['enddate'] = strftime('%Y-%m-%d %H:%M',el.enddate);
         item['endtime'] = strftime('%H:%M',el.enddate);
         item['heading'] = el.heading;
-        item['text'] = wrap(el.text);
+        item['text'] = el.text;
         view.events.push(item);
     });
     return view;
@@ -85,6 +84,9 @@ EventTool.prototype.publishMail = function() {
     var self = this;
     log('Verschicke eine E-Mail');
     var view = self.processEventData();
+    view.events.forEach(function(el){
+        el.text = wrap(el.text);
+    });
     // load the template
     var template = fs.readFileSync('templates/email/template.mustache','utf-8');
     var output = mustache.render(template, view);
