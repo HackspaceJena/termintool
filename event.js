@@ -33,6 +33,18 @@ function EventTool() {
     events.EventEmitter.call(this);
 };
 
+String.prototype.EscapeLatex = function() {
+  return this.toString()
+    .replace(/&amp;/g,'&')
+    .replace(/\\/g,'\\textbackslash{}')
+    .replace(/&/g,'\\&')
+    .replace(/\|/g,'\\|')
+    .replace(/\[/g,'\\[')
+    .replace(/\]/g,'\\]')
+    .replace(/\%/g,'\\%')
+    .replace(/\$/g,'\\$');
+}
+
 EventTool.super_ = events.EventEmitter;
 EventTool.prototype = Object.create(events.EventEmitter.prototype, {
                                   constructor: {
@@ -95,6 +107,10 @@ EventTool.prototype.publishLatex = function() {
     var self = this;
     log('Erzeuge PDFs mit LaTeX');
     var view = self.processEventData();
+    view.events.forEach(function(el){
+      el.heading = el.heading.EscapeLatex();
+      el.text = el.text.EscapeLatex();
+    });
     // generate the pdfs
     self.config.latex.templates.forEach(function(template){
         var templateData = fs.readFileSync('templates/latex/'+template+'.tex','utf-8');        
