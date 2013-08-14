@@ -20,7 +20,8 @@ var
   ,strftime = require('strftime')
   ,fs = require('fs')
   ,glob = require('glob')
-  ,jq = require('jquery');
+  ,jq = require('jquery')
+  ,wrap = require('wordwrap')(72);
 
 function nextDay(x){
     var now = new Date();    
@@ -62,7 +63,7 @@ EventTool.prototype.processEventData = function() {
         item['enddate'] = strftime('%Y-%m-%d %H:%M',el.enddate);
         item['endtime'] = strftime('%H:%M',el.enddate);
         item['heading'] = el.heading;
-        item['text'] = el.text;
+        item['text'] = wrap(el.text);
         view.events.push(item);
     });
     return view;

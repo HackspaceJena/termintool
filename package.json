@@ -10,5 +10,6 @@
   , "glob": "latest"
   , "jquery": "latest"
   , "request": "latest"
+  , "wordwrap": "latest"
   }
 }
