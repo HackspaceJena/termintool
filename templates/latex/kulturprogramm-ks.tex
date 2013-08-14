@@ -1,18 +1,16 @@
-%% LyX 2.0.3 created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
 \documentclass[ngerman]{paper}
-\renewcommand{\familydefault}{\ttdefault}
+%\renewcommand{\familydefault}{\ttdefault}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{geometry}
 \geometry{verbose,tmargin=0cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
 \usepackage{array}
 \usepackage{booktabs}
-
+\usepackage{palatino}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[draft=false]{microtype}
 \makeatletter
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
-%% Because html converters don't know tabularnewline
 \providecommand{\tabularnewline}{\\}
 
 \makeatother
@@ -33,9 +31,9 @@ sondern aus Spaß an der Sache.
 
 \section*{Wie gewohnt das Kulturprogramm für kommende Woche:}
 
-\begin{tabular*}{0.8\columnwidth}{@{\extracolsep{\fill}}>{\raggedright}p{0.28\columnwidth}>{\raggedright}p{0.6\columnwidth}}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}>{\raggedright}p{0.28\columnwidth}>{\raggedright}p{0.72\columnwidth}}
 {{#events}}
-{{startdate}}: & {{&heading}}
+{{startdate}}: & \textbf{\large  {{&heading}} \normalsize}
 
 {{&text}}\tabularnewline
 \midrule
@@ -45,21 +43,19 @@ sondern aus Spaß an der Sache.
 
 \section*{Regelmäßig im Space:}
 
-\begin{tabular*}{0.8\columnwidth}{@{\extracolsep{\fill}}>{\raggedright}p{0.28\columnwidth}>{\raggedright}p{0.6\columnwidth}}
-jeden Dienstag, ab 20:00 & Offene Runde im Space\tabularnewline
-\midrule
-jeden ungerade Mittwoch, ab 20:00 & Spielerunde\tabularnewline
-\midrule
-jeden geraden Donnerstag, ab 19:00 & Linux User Group Jena
-
-http://lug-jena.de\tabularnewline
-\midrule
-jeden ungeraden Sonntag, ab 16:00 & Chaostreff/Chaoscafe\tabularnewline
-\midrule
-jeden zweiten Freitag im Monat, ab 19:00 & Plenum\tabularnewline
-\midrule
-jeden dritten Freitag im Monat, ab 19:00 & foodhacking\tabularnewline
-\end{tabular*}
+\small
+\begin{itemize}
+	\item \textbf{montags:} Elektronikrunde ab ca. 19:30h
+	\item \textbf{dienstags:} offene Runde ab ca. 20h
+	\item \textbf{mittwochs:} gerade Wochen: (Brett-)spieleabend
+	\item \textbf{donnerstags:} ungerade Wochen: Stammtisch der Linux-Nutzer-Gruppe
+	\item \textbf{freitags:} \begin{itemize}
+		\item 1. Woche im Monat: Lockpicking ab ca. 20h
+		\item 2. Woche im Monat: Plenum ab ca. 19h
+		\item 3. Woche im Monat: Küchenecke ab ca. 19h
+	\end{itemize}
+	\item \textbf{sonntags:} ungerade Wochen: Chaoscafe ab ca. 16h
+\end{itemize}
 
 
 \section*{Kontakt}
@@ -69,5 +65,6 @@ in der Krautgasse 26
 \item [{per~Mail}] auf unserer Mailingliste https://www.krautspace.de/hswiki:mailingliste
 \item [{oder~in~unserem~Chat}] (Jabber MUC): hackspace@chat.lug-jena.de
 (Webinterface)\end{description}
-
+\vfill
+\raggedleft{\textbf{Stand:} \today}
 \end{document}
